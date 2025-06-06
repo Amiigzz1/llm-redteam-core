@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    section { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <section>
+    <h2>Cars</h2>
+    <ul id="cars"></ul>
+  </section>
+  <section>
+    <h2>Showrooms</h2>
+    <ul id="showrooms"></ul>
+  </section>
+  <section>
+    <h2>Dealers</h2>
+    <ul id="dealers"></ul>
+  </section>
+  <section>
+    <h2>Customers</h2>
+    <ul id="customers"></ul>
+  </section>
+  <section>
+    <h2>Companies</h2>
+    <ul id="companies"></ul>
+  </section>
+<script>
+async function fetchAndRender(endpoint, elementId, formatter) {
+  const res = await fetch(`http://localhost:3001/api/${endpoint}`);
+  const items = await res.json();
+  const list = document.getElementById(elementId);
+  list.innerHTML = '';
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = formatter(item);
+    list.appendChild(li);
+  });
+}
+
+function init() {
+  fetchAndRender('cars', 'cars', i => `${i.make} ${i.model} (${i.year})`);
+  fetchAndRender('showrooms', 'showrooms', i => `${i.name} - ${i.location}`);
+  fetchAndRender('dealers', 'dealers', i => `${i.name} - ${i.email}`);
+  fetchAndRender('customers', 'customers', i => `${i.name} - ${i.phone}`);
+  fetchAndRender('companies', 'companies', i => `${i.name} - ${i.sector}`);
+}
+
+init();
+</script>
+</body>
+</html>

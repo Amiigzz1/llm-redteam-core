@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Dealers</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Dealers Dashboard</h1>
+  <form id="addDealerForm">
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <button type="submit">Add Dealer</button>
+  </form>
+  <ul id="dealerList"></ul>
+<script>
+async function fetchDealers() {
+  const res = await fetch('http://localhost:3001/api/dealers');
+  const items = await res.json();
+  const list = document.getElementById('dealerList');
+  list.innerHTML = '';
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.name} - ${item.email}`;
+    list.appendChild(li);
+  });
+}
+
+document.getElementById('addDealerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  await fetch('http://localhost:3001/api/dealers', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email })
+  });
+  e.target.reset();
+  fetchDealers();
+});
+
+fetchDealers();
+</script>
+</body>
+</html>
