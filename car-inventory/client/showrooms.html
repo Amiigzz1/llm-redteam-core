@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Showrooms</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Showrooms Dashboard</h1>
+  <form id="addShowroomForm">
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="text" id="location" placeholder="Location" required />
+    <button type="submit">Add Showroom</button>
+  </form>
+  <ul id="showroomList"></ul>
+<script>
+async function fetchShowrooms() {
+  const res = await fetch('http://localhost:3001/api/showrooms');
+  const items = await res.json();
+  const list = document.getElementById('showroomList');
+  list.innerHTML = '';
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.name} - ${item.location}`;
+    list.appendChild(li);
+  });
+}
+
+document.getElementById('addShowroomForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const location = document.getElementById('location').value;
+  await fetch('http://localhost:3001/api/showrooms', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, location })
+  });
+  e.target.reset();
+  fetchShowrooms();
+});
+
+fetchShowrooms();
+</script>
+</body>
+</html>

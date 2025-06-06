@@ -1,11 +1,11 @@
 # Car Inventory Project
 
-This is a minimal example of a car inventory system for dealerships in Saudi Arabia. The project includes a simple Express.js back-end and a front-end written with vanilla JavaScript.
+This is a simple example of a car inventory system for dealerships in Saudi Arabia. The project now includes basic dashboards for cars, showrooms, dealers, customers, companies and an admin view. All data is stored in memory.
 
 ## Structure
 
 - `server/` – Express server exposing API endpoints.
-- `client/` – Static HTML front-end to interact with the API.
+- `client/` – Static HTML front-end to interact with the API. Pages exist for each role.
 
 ## Setup
 
@@ -14,6 +14,6 @@ This is a minimal example of a car inventory system for dealerships in Saudi Ara
    npm install
    node index.js
    ```
-2. Open `client/index.html` in a browser and use the form to add cars.
+2. Open the HTML pages in the `client` folder (e.g. `index.html`, `showrooms.html`, etc.) in a browser and use the forms to add data.
 
-This is a starting point and can be extended to include authentication and separate dashboards for showrooms, traders, customers, companies, and admin users.
+Authentication or persistent storage can be added as a future enhancement.

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Companies</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Companies Dashboard</h1>
+  <form id="addCompanyForm">
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="text" id="sector" placeholder="Sector" required />
+    <button type="submit">Add Company</button>
+  </form>
+  <ul id="companyList"></ul>
+<script>
+async function fetchCompanies() {
+  const res = await fetch('http://localhost:3001/api/companies');
+  const items = await res.json();
+  const list = document.getElementById('companyList');
+  list.innerHTML = '';
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.name} - ${item.sector}`;
+    list.appendChild(li);
+  });
+}
+
+document.getElementById('addCompanyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const sector = document.getElementById('sector').value;
+  await fetch('http://localhost:3001/api/companies', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, sector })
+  });
+  e.target.reset();
+  fetchCompanies();
+});
+
+fetchCompanies();
+</script>
+</body>
+</html>
