@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Car Inventory</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Car Inventory Dashboard</h1>
+  <form id="addCarForm">
+    <input type="text" id="make" placeholder="Make" required />
+    <input type="text" id="model" placeholder="Model" required />
+    <input type="number" id="year" placeholder="Year" required />
+    <button type="submit">Add Car</button>
+  </form>
+  <ul id="carList"></ul>
+<script>
+async function fetchCars() {
+  const res = await fetch('http://localhost:3001/api/cars');
+  const cars = await res.json();
+  const list = document.getElementById('carList');
+  list.innerHTML = '';
+  cars.forEach(car => {
+    const item = document.createElement('li');
+    item.textContent = `${car.make} ${car.model} (${car.year})`;
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('addCarForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const make = document.getElementById('make').value;
+  const model = document.getElementById('model').value;
+  const year = parseInt(document.getElementById('year').value, 10);
+  await fetch('http://localhost:3001/api/cars', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ make, model, year })
+  });
+  e.target.reset();
+  fetchCars();
+});
+
+fetchCars();
+</script>
+</body>
+</html>
